@@ -184,3 +184,143 @@ func (u *UnconfirmedIAm) GetService() uint8 {
 func (u *UnconfirmedIAm) GetType() uint8 {
 	return u.APDU.Type
 }
+
+//--------------------------------------------------------------------
+//---------------------Unicast implementation-------------------------
+//--------------------------------------------------------------------
+
+// UnicastIAm is a BACnet message for unicast IAm responses.
+type UnicastIAm struct {
+	*plumbing.BVLC
+	*plumbing.NPDU
+	*plumbing.APDU
+}
+
+// NewUnicastIAm creates a UnicastIAm.  The BVLC and NPDU should be pre-populated
+// with the correct values (including the unicast BVLC function).
+func NewUnicastIAm(bvlc *plumbing.BVLC, npdu *plumbing.NPDU, apdu *plumbing.APDU) *UnicastIAm {
+	u := &UnicastIAm{
+		BVLC: bvlc,
+		NPDU: npdu,
+		APDU: apdu, //We pass apdu now
+	}
+	u.SetLength() // Set the BVLC length based on the entire message.
+
+	return u
+}
+
+// UnmarshalBinary sets the values retrieved from byte sequence in a UnicastIAm frame.
+func (u *UnicastIAm) UnmarshalBinary(b []byte) error {
+	//This is the same as the other
+	if l := len(b); l < u.MarshalLen() {
+		return common.ErrTooShortToParse
+	}
+
+	var offset int = 0
+	if err := u.BVLC.UnmarshalBinary(b[offset:]); err != nil {
+		return common.ErrTooShortToParse
+	}
+	offset += u.BVLC.MarshalLen()
+
+	if err := u.NPDU.UnmarshalBinary(b[offset:]); err != nil {
+		return common.ErrTooShortToParse
+	}
+	offset += u.NPDU.MarshalLen()
+
+	if err := u.APDU.UnmarshalBinary(b[offset:]); err != nil {
+		return common.ErrTooShortToParse
+	}
+
+	return nil
+}
+
+// MarshalBinary returns the byte sequence generated from a UnicastIAm instance.
+func (u *UnicastIAm) MarshalBinary() ([]byte, error) {
+	// Same as other
+	b := make([]byte, u.MarshalLen())
+	if err := u.MarshalTo(b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+// MarshalTo puts the byte sequence in the byte array given as b.
+func (u *UnicastIAm) MarshalTo(b []byte) error {
+	//same as other
+	if len(b) < u.MarshalLen() {
+		return common.ErrTooShortToMarshalBinary
+	}
+	var offset = 0
+	if err := u.BVLC.MarshalTo(b[offset:]); err != nil {
+		return err
+	}
+	offset += u.BVLC.MarshalLen()
+
+	if err := u.NPDU.MarshalTo(b[offset:]); err != nil {
+		return err
+	}
+	offset += u.NPDU.MarshalLen()
+
+	if err := u.APDU.MarshalTo(b[offset:]); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// MarshalLen returns the serial length of UnicastIAm.
+func (u *UnicastIAm) MarshalLen() int {
+	//same as other
+	l := u.BVLC.MarshalLen()
+	l += u.NPDU.MarshalLen()
+	l += u.APDU.MarshalLen()
+
+	return l
+}
+
+// SetLength sets the length in the BVLC Length field.
+func (u *UnicastIAm) SetLength() {
+	//same as other
+	u.BVLC.Length = uint16(u.MarshalLen())
+}
+
+// Decode extracts the relevant fields from the UnicastIAm message.
+func (u *UnicastIAm) Decode() (UnconfirmedIAmDec, error) {
+	//same as other
+	decIAm := UnconfirmedIAmDec{} // Use same decoding struct
+
+	if len(u.APDU.Objects) != 4 {
+		return decIAm, common.ErrWrongObjectCount
+	}
+
+	for i, obj := range u.APDU.Objects {
+		switch i {
+		case 0:
+			objId, err := objects.DecObjectIdentifier(obj)
+			if err != nil {
+				return decIAm, err
+			}
+			decIAm.InstanceNum = objId.InstanceNumber
+		case 1:
+			maxLen, err := objects.DecUnsignedInteger(obj)
+			if err != nil {
+				return decIAm, err
+			}
+			decIAm.MaxAPDULength = uint16(maxLen)
+		case 2:
+			segSupport, err := objects.DecEnumerated(obj)
+			if err != nil {
+				return decIAm, err
+			}
+			decIAm.SegmentationSupported = uint8(segSupport)
+		case 3:
+			vendorId, err := objects.DecUnsignedInteger(obj)
+			if err != nil {
+				return decIAm, err
+			}
+			decIAm.VendorId = uint16(vendorId)
+		}
+	}
+
+	return decIAm, nil
+}
