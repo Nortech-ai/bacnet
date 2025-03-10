@@ -76,14 +76,14 @@ func TestParseReadProperty(t *testing.T, Parse func([]byte) (plumbing.BACnet, er
 	open := &objects.Object{
 		TagNumber: 3,
 		TagClass:  true,
-		Data: []byte{},
-		Length: 6,
+		Data:      []byte{},
+		Length:    6,
 	}
 	close := &objects.Object{
 		TagNumber: 3,
 		TagClass:  true,
-		Data: []byte{},
-		Length: 7,
+		Data:      []byte{},
+		Length:    7,
 	}
 	AssertEqual(t, uint8(0x81), resultReadProp.BVLC.Type)
 	AssertEqual(t, uint8(0x0a), resultReadProp.BVLC.Function)
@@ -99,7 +99,7 @@ func TestParseReadProperty(t *testing.T, Parse func([]byte) (plumbing.BACnet, er
 	AssertEqualTag(t, close, resultReadProp.APDU.Objects[4])
 }
 
-func TestParseIam(t *testing.T, Parse func([]byte) (plumbing.BACnet, error)) {
+func TestParseUnicastIam(t *testing.T, Parse func([]byte) (plumbing.BACnet, error)) {
 	result, err := Parse([]byte{
 		0x81, 0x0a, 0x00, 0x14, 0x01, 0x00, 0x10, 0x00, 0xc4, 0x02,
 		0x00, 0x00, 0x65, 0x22, 0x05, 0xc4, 0x91, 0x00, 0x21, 0x07,
@@ -107,7 +107,7 @@ func TestParseIam(t *testing.T, Parse func([]byte) (plumbing.BACnet, error)) {
 	if err != nil {
 		t.Errorf("Error parsing: %v", err)
 	}
-	resultIam, ok := result.(*services.UnconfirmedIAm)
+	resultIam, ok := result.(*services.UnicastIAm)
 	if !ok {
 		t.Errorf("Didn't get IAm: %v", result)
 	}
@@ -211,7 +211,7 @@ func TestParseReadPropertyMultiple(t *testing.T, Parse func([]byte) (plumbing.BA
 		Data:      []byte{0x02, 0x00, 0x00, 0x65},
 		Length:    4,
 	}
-	objectName:= &objects.Object{
+	objectName := &objects.Object{
 		TagNumber: 7,
 		TagClass:  false,
 		Data: []byte{0x00, 0x55, 0x4f, 0x2d, 0x41, 0x6e, 0x61, 0x6c, 0x79, 0x73,

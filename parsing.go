@@ -53,7 +53,19 @@ func Parse(b []byte) (plumbing.BACnet, error) {
 	case combine(plumbing.UnConfirmedReq<<4, services.ServiceUnconfirmedWhoIs):
 		bacnet = services.NewUnconfirmedWhoIs(&bvlc, &npdu)
 	case combine(plumbing.UnConfirmedReq<<4, services.ServiceUnconfirmedIAm):
-		bacnet = services.NewUnconfirmedIAm(&bvlc, &npdu)
+		// Check BVLC function to differentiate between broadcast and unicast IAm.
+		if bvlc.Function == plumbing.BVLCFuncBroadcast {
+			bacnet = services.NewUnconfirmedIAm(&bvlc, &npdu)
+		} else if bvlc.Function == plumbing.BVLCFuncUnicast {
+			//For unicast, pass apdu aswell
+			apdu := &plumbing.APDU{}
+			if err := apdu.UnmarshalBinary(b[offset:]); err != nil {
+				return nil, err
+			}
+			bacnet = services.NewUnicastIAm(&bvlc, &npdu, apdu)
+		} else {
+			return nil, common.ErrNotImplemented
+		}
 	case combine(plumbing.UnConfirmedReq<<4, services.ServiceUnconfirmedCOVNotification):
 		bacnet = services.NewUnconfirmedCOVNotification(&bvlc, &npdu)
 	case combine(plumbing.ConfirmedReq<<4, services.ServiceConfirmedCOVNotification):

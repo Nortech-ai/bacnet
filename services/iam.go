@@ -324,3 +324,11 @@ func (u *UnicastIAm) Decode() (UnconfirmedIAmDec, error) {
 
 	return decIAm, nil
 }
+
+func (u *UnicastIAm) GetService() uint8 {
+	return u.APDU.Service
+}
+
+func (u *UnicastIAm) GetType() uint8 {
+	return u.APDU.Type
+}
