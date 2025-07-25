@@ -13,6 +13,9 @@ type NPDU struct {
 	Control uint8
 	DNET    uint16
 	DLEN    uint8
+	SNET    uint16
+	SLEN    uint8
+	SADR    uint8
 	Hop     uint8
 }
 
@@ -42,12 +45,27 @@ func (n *NPDU) UnmarshalBinary(b []byte) error {
 			common.ErrTooShortToParse,
 		)
 	}
+
 	n.Version = b[0]
 	n.Control = b[1]
-	if flagDNET := n.Control & 0x20 >> 5; flagDNET == 1 {
-		n.DNET = binary.BigEndian.Uint16(b[2:4])
-		n.DLEN = b[4]
-		n.Hop = b[5]
+
+	offset := 2
+	if n.flagDNET() {
+		n.DNET = binary.BigEndian.Uint16(b[offset : offset+2])
+		n.DLEN = b[offset+2]
+		offset += 3
+	}
+
+	if n.flagSNET() {
+		n.SNET = binary.BigEndian.Uint16(b[offset : offset+2])
+		n.SLEN = b[offset+2]
+		n.SADR = b[offset+3]
+		offset += 4
+	}
+
+	if n.flagDNET() {
+		n.Hop = b[offset]
+		offset++
 	}
 
 	return nil
@@ -63,13 +81,30 @@ func (n *NPDU) MarshalTo(b []byte) error {
 			common.ErrTooShortToMarshalBinary,
 		)
 	}
+
 	b[0] = n.Version
 	b[1] = n.Control
-	if flagDNET := n.Control & 0x20 >> 5; flagDNET == 1 {
-		binary.BigEndian.PutUint16(b[2:4], n.DNET)
-		b[4] = n.DLEN
-		b[5] = n.Hop
+
+	offset := 2
+
+	if n.flagDNET() {
+		binary.BigEndian.PutUint16(b[offset:offset+2], n.DNET)
+		b[offset+2] = n.DLEN
+		offset += 3
 	}
+
+	if n.flagSNET() {
+		binary.BigEndian.PutUint16(b[offset:offset+2], n.SNET)
+		b[offset+2] = n.SLEN
+		b[offset+3] = n.SADR
+		offset += 4
+	}
+
+	if n.flagDNET() {
+		b[offset] = n.Hop
+		offset++
+	}
+
 	return nil
 }
 
@@ -77,9 +112,23 @@ const npduLenMin = 2
 
 // MarshalLen returns the serial length of NPDU.
 func (n *NPDU) MarshalLen() int {
-	flagDNET := n.Control & 0x20 >> 5
-	if flagDNET == 1 {
-		return npduLenMin + 4
+	len := npduLenMin
+
+	if n.flagDNET() {
+		len += 4
 	}
-	return npduLenMin
+
+	if n.flagSNET() {
+		len += 4
+	}
+
+	return len
+}
+
+func (n *NPDU) flagDNET() bool {
+	return (n.Control & 0x20) != 0
+}
+
+func (n *NPDU) flagSNET() bool {
+	return (n.Control & 0x08) != 0
 }
