@@ -6,7 +6,7 @@ import (
 	"math"
 	"time"
 
-	"github.com/jonalfarlinga/bacnet/common"
+	"github.com/Nortech-ai/bacnet/common"
 )
 
 var TagMap = map[uint8]string{

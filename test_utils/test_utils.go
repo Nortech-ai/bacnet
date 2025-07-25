@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/jonalfarlinga/bacnet/objects"
+	"github.com/Nortech-ai/bacnet/objects"
 )
 
 func AssertEqualTag(t *testing.T, expected *objects.Object, actual objects.APDUPayload) {

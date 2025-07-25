@@ -9,9 +9,9 @@ import (
 	"net"
 	"time"
 
-	"github.com/jonalfarlinga/bacnet"
-	"github.com/jonalfarlinga/bacnet/plumbing"
-	"github.com/jonalfarlinga/bacnet/services"
+	"github.com/Nortech-ai/bacnet"
+	"github.com/Nortech-ai/bacnet/plumbing"
+	"github.com/Nortech-ai/bacnet/services"
 	"github.com/spf13/cobra"
 )
 

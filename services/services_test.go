@@ -7,11 +7,11 @@ package services_test
 import (
 	"testing"
 
+	"github.com/Nortech-ai/bacnet"
+	"github.com/Nortech-ai/bacnet/common"
+	"github.com/Nortech-ai/bacnet/plumbing"
+	"github.com/Nortech-ai/bacnet/services"
 	"github.com/google/go-cmp/cmp"
-	"github.com/jonalfarlinga/bacnet"
-	"github.com/jonalfarlinga/bacnet/common"
-	"github.com/jonalfarlinga/bacnet/plumbing"
-	"github.com/jonalfarlinga/bacnet/services"
 )
 
 type serializeable interface {
@@ -34,7 +34,7 @@ func TestUnconfirmedWhoIs(t *testing.T) {
 	var testcases = []testCase{
 		{
 			description: "Unconfirmed request WhoIs frame",
-			structured: str,
+			structured:  str,
 			serialized: []byte{
 				0x81, 0x0b, 0x00, 0x08, // BVLC
 				0x01, 0x00, // NPDU
@@ -79,7 +79,7 @@ func TestUnconfirmedIAm(t *testing.T) {
 	var testcases = []testCase{
 		{
 			description: "Unconfirmed request IAm frame",
-			structured: str,
+			structured:  str,
 			serialized: []byte{
 				0x81, 0x0b, 0x00, 0x14, // BVLC
 				0x01, 0x00, // NPDU

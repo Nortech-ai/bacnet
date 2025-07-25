@@ -9,15 +9,15 @@ import (
 	"net"
 	"time"
 
-	"github.com/jonalfarlinga/bacnet"
-	"github.com/jonalfarlinga/bacnet/plumbing"
-	"github.com/jonalfarlinga/bacnet/services"
+	"github.com/Nortech-ai/bacnet"
+	"github.com/Nortech-ai/bacnet/plumbing"
+	"github.com/Nortech-ai/bacnet/services"
 	"github.com/spf13/cobra"
 )
 
 func init() {
 	ReadRangeClientCmd.Flags().Uint16Var(&rrObjectType, "object-type", 0, "Object type to read.")
-	ReadRangeClientCmd.Flags().Uint32Var(&rrInstanceId, "instance-id", 0, "Instance ID to read.")  // Analog-input
+	ReadRangeClientCmd.Flags().Uint32Var(&rrInstanceId, "instance-id", 0, "Instance ID to read.")   // Analog-input
 	ReadRangeClientCmd.Flags().Uint16Var(&rrPropertyId, "property-id", 131, "Property ID to read.") // Current-value
 	ReadRangeClientCmd.Flags().Uint16Var(&rrRangeStart, "range-start", 1, "Range start index.")
 	ReadRangeClientCmd.Flags().Int32Var(&rrLength, "length", 50, "Length of results.")

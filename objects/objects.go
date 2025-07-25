@@ -3,7 +3,7 @@ package objects
 import (
 	"fmt"
 
-	"github.com/jonalfarlinga/bacnet/common"
+	"github.com/Nortech-ai/bacnet/common"
 )
 
 type APDUPayload interface {

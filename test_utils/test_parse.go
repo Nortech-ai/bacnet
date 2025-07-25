@@ -3,9 +3,9 @@ package test_utils
 import (
 	"testing"
 
-	"github.com/jonalfarlinga/bacnet/objects"
-	"github.com/jonalfarlinga/bacnet/plumbing"
-	"github.com/jonalfarlinga/bacnet/services"
+	"github.com/Nortech-ai/bacnet/objects"
+	"github.com/Nortech-ai/bacnet/plumbing"
+	"github.com/Nortech-ai/bacnet/services"
 )
 
 func TestParseWhois(t *testing.T, Parse func([]byte) (plumbing.BACnet, error)) {

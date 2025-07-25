@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/jonalfarlinga/bacnet/objects"
-	"github.com/jonalfarlinga/bacnet/services"
+	"github.com/Nortech-ai/bacnet/objects"
+	"github.com/Nortech-ai/bacnet/services"
 )
 
 func printCACK(d *services.ComplexACKDec) {

@@ -4,7 +4,7 @@ import (
 	"encoding/binary"
 	"fmt"
 
-	"github.com/jonalfarlinga/bacnet/common"
+	"github.com/Nortech-ai/bacnet/common"
 )
 
 type ObjectIdentifier struct {

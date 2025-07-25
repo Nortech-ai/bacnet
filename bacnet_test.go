@@ -3,7 +3,7 @@ package bacnet
 import (
 	"testing"
 
-	"github.com/jonalfarlinga/bacnet/test_utils"
+	"github.com/Nortech-ai/bacnet/test_utils"
 )
 
 func TestParseWhois(t *testing.T) {

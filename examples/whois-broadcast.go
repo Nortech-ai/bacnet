@@ -9,9 +9,9 @@ import (
 	"net"
 	"time"
 
-	"github.com/jonalfarlinga/bacnet"
-	"github.com/jonalfarlinga/bacnet/common"
-	"github.com/jonalfarlinga/bacnet/services"
+	"github.com/Nortech-ai/bacnet"
+	"github.com/Nortech-ai/bacnet/common"
+	"github.com/Nortech-ai/bacnet/services"
 	"github.com/spf13/cobra"
 )
 
@@ -22,7 +22,7 @@ func init() {
 
 var (
 	nWhoB         int
-	bacPort         string
+	bacPort       string
 	whoIsCmdBroad = &cobra.Command{
 		Use:   "whoisb",
 		Short: "Send WhoIs requests.",

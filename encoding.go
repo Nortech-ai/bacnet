@@ -1,8 +1,8 @@
 package bacnet
 
 import (
-	"github.com/jonalfarlinga/bacnet/plumbing"
-	"github.com/jonalfarlinga/bacnet/services"
+	"github.com/Nortech-ai/bacnet/plumbing"
+	"github.com/Nortech-ai/bacnet/services"
 )
 
 const (

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/jonalfarlinga/bacnet/objects"
+	"github.com/Nortech-ai/bacnet/objects"
 )
 
 func decodeAppTags(enc_obj *objects.Object, obj *objects.APDUPayload) (*objects.Object, error) {

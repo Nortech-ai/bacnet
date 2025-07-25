@@ -4,7 +4,7 @@ import (
 	"encoding/binary"
 	"fmt"
 
-	"github.com/jonalfarlinga/bacnet/common"
+	"github.com/Nortech-ai/bacnet/common"
 )
 
 // BVLCType is used for BACnet/IP in BVLL.

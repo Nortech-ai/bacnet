@@ -3,8 +3,8 @@ package services
 import (
 	"fmt"
 
-	"github.com/jonalfarlinga/bacnet/common"
-	"github.com/jonalfarlinga/bacnet/plumbing"
+	"github.com/Nortech-ai/bacnet/common"
+	"github.com/Nortech-ai/bacnet/plumbing"
 )
 
 // SimpleACK is a BACnet message.

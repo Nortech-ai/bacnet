@@ -3,8 +3,8 @@ package plumbing
 import (
 	"fmt"
 
-	"github.com/jonalfarlinga/bacnet/common"
-	"github.com/jonalfarlinga/bacnet/objects"
+	"github.com/Nortech-ai/bacnet/common"
+	"github.com/Nortech-ai/bacnet/objects"
 )
 
 // APDU is a Application protocol DAta Units.

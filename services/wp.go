@@ -3,9 +3,9 @@ package services
 import (
 	"fmt"
 
-	"github.com/jonalfarlinga/bacnet/common"
-	"github.com/jonalfarlinga/bacnet/objects"
-	"github.com/jonalfarlinga/bacnet/plumbing"
+	"github.com/Nortech-ai/bacnet/common"
+	"github.com/Nortech-ai/bacnet/objects"
+	"github.com/Nortech-ai/bacnet/plumbing"
 )
 
 // UnconfirmedIAm is a BACnet message.

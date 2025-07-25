@@ -1,4 +1,4 @@
-module github.com/jonalfarlinga/bacnet
+module github.com/Nortech-ai/bacnet
 
 go 1.19
 

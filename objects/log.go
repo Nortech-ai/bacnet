@@ -1,6 +1,6 @@
 package objects
 
-import "github.com/jonalfarlinga/bacnet/common"
+import "github.com/Nortech-ai/bacnet/common"
 
 type LogStatus struct {
 	LogDisabled  bool
